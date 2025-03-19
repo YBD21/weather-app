@@ -16,7 +16,7 @@ export default function NotFoundScreen() {
           doesn't exist.
         </Text>
         <Link href="/" asChild>
-          <Pressable className="rounded-lg bg-blue-400 px-6 py-3 active:bg-blue-600">
+          <Pressable className="rounded-lg bg-blue-500 px-6 py-3 active:bg-blue-600">
             <Text className="text-center font-semibold text-white">
               Back to Clear Skies
             </Text>

@@ -4,7 +4,7 @@ import { Link, Stack } from "expo-router";
 // Component for the weather header section
 const Header = () => (
   <View className="flex items-center justify-center">
-    <View className="w-24 h-24 bg-blue-500 rounded-full flex items-center justify-center">
+    <View className="w-24 h-24 bg-blue-600 rounded-full flex items-center justify-center">
       <Text className="text-white text-4xl">☀️</Text>
     </View>
   </View>
