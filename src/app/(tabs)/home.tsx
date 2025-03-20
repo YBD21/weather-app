@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import { Stack } from "expo-router";
-import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+  Keyboard,
+} from "react-native";
 import * as Location from "expo-location";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 
@@ -10,7 +17,10 @@ const Home = () => {
     null
   );
 
+  const dummyLocations = ["London, United Kingdom", "New York, USA"];
+
   const handleSearch = () => {
+    Keyboard.dismiss();
     console.log("Search query:", searchQuery);
   };
 
@@ -45,20 +55,54 @@ const Home = () => {
         }}
       />
       <View className="flex-1 bg-blue-100 px-4 py-2.5">
-        <View className="space-y-6">
-          <View className="bg-white rounded-xl shadow-md m-4">
+        <View className="space-y-6 mx-4">
+          <View className="bg-white rounded-xl shadow-md mt-4">
             <View className="flex-row items-center border border-blue-50 rounded-xl px-2">
               <TextInput
-                className="flex-1 px-4 py-2 "
+                className="flex-1 px-4 py-2 !text-blue-500 font-semibold"
                 placeholder="Search location..."
-                placeholderTextColor="#94A3B8"
                 value={searchQuery}
                 onChangeText={setSearchQuery}
                 onSubmitEditing={handleSearch}
                 returnKeyType="search"
+                autoCapitalize="words"
               />
-              <FontAwesome name="search" size={20} className="!text-blue-400" />
+
+              <TouchableOpacity
+                onPress={handleSearch}
+                className="bg-slate-100 py-2 px-3 -mr-2 rounded-lg active:bg-slate-200 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+              >
+                <FontAwesome
+                  name="search"
+                  size={20}
+                  className="!text-blue-400"
+                />
+              </TouchableOpacity>
             </View>
+          </View>
+          {/* suggest search value */}
+          <View className="bg-white rounded-xl shadow-md  px-4 py-2.5 my-1.5">
+            {/* Display suggested location list */}
+            {/* You can map through your locations data */}
+            {dummyLocations.map((city, index) => (
+              <TouchableOpacity
+                key={index}
+                onPress={() => {
+                  setSearchQuery(city);
+                  handleSearch();
+                }}
+                className="flex-row items-center space-x-2 py-2 border-b border-gray-200"
+              >
+                <MaterialIcons
+                  name="location-on"
+                  size={20}
+                  className="!text-blue-500"
+                />
+                <Text className="ml-1.5 !text-blue-400 font-semibold">
+                  {city}
+                </Text>
+              </TouchableOpacity>
+            ))}
           </View>
 
           <TouchableOpacity
