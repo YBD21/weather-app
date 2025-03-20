@@ -56,34 +56,36 @@ const Home = () => {
       />
       <View className="flex-1 bg-blue-100 px-4 py-2.5">
         <View className="space-y-6 mx-4">
-          <View className="bg-white rounded-xl shadow-md mt-4">
-            <View className="flex-row items-center border border-blue-50 rounded-xl px-2">
+          <View className="bg-white rounded-2xl shadow-lg mt-6 overflow-hidden border border-gray-200">
+            <View className="flex-row items-center px-3 py-1">
+              <TouchableOpacity onPress={getLocation}>
+                <MaterialIcons
+                  name={`${location ? "my-location" : "location-searching"}`}
+                  size={20}
+                  className="mr-2 !text-blue-500"
+                />
+              </TouchableOpacity>
               <TextInput
-                className="flex-1 px-4 py-2 !text-blue-500 font-semibold"
-                placeholder="Search location..."
+                className="flex-1 py-3 px-2 text-gray-700 font-medium text-base"
+                placeholder="Search for a location..."
+                placeholderTextColor="#9CA3AF"
                 value={searchQuery}
                 onChangeText={setSearchQuery}
                 onSubmitEditing={handleSearch}
                 returnKeyType="search"
                 autoCapitalize="words"
               />
-
               <TouchableOpacity
                 onPress={handleSearch}
-                className="bg-slate-100 py-2 px-3 -mr-2 rounded-lg active:bg-slate-200 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                className="bg-blue-500 p-2.5 rounded-full active:bg-blue-600"
               >
-                <FontAwesome
-                  name="search"
-                  size={20}
-                  className="!text-blue-400"
-                />
+                <FontAwesome name="search" size={18} color="white" />
               </TouchableOpacity>
             </View>
           </View>
+
           {/* suggest search value */}
-          <View className="bg-white rounded-xl shadow-md  px-4 py-2.5 my-1.5">
-            {/* Display suggested location list */}
-            {/* You can map through your locations data */}
+          <View className="bg-white rounded-xl shadow-md px-4 py-2.5 my-1.5">
             {dummyLocations.map((city, index) => (
               <TouchableOpacity
                 key={index}
@@ -91,29 +93,31 @@ const Home = () => {
                   setSearchQuery(city);
                   handleSearch();
                 }}
-                className="flex-row items-center space-x-2 py-2 border-b border-gray-200"
+                className="flex-row items-center py-3 border-b border-gray-100 active:bg-blue-50"
+                style={{
+                  borderBottomWidth:
+                    index === dummyLocations.length - 1 ? 0 : 1,
+                }}
               >
+                <View className="bg-blue-100 p-2 rounded-full">
+                  <MaterialIcons
+                    name="location-on"
+                    size={18}
+                    className="!text-blue-500"
+                  />
+                </View>
+                <View className="ml-3 flex-1">
+                  <Text className="text-gray-500 font-semibold">{city}</Text>
+                  <Text className="text-xs text-gray-500">Tap to select</Text>
+                </View>
                 <MaterialIcons
-                  name="location-on"
+                  name="chevron-right"
                   size={20}
-                  className="!text-blue-500"
+                  className="!text-gray-400"
                 />
-                <Text className="ml-1.5 !text-blue-400 font-semibold">
-                  {city}
-                </Text>
               </TouchableOpacity>
             ))}
           </View>
-
-          <TouchableOpacity
-            className="bg-blue-500 mx-24 px-1.5 py-3.5 rounded-lg flex-row justify-center items-center space-x-2 active:bg-blue-600 shadow-md"
-            onPress={getLocation}
-          >
-            <MaterialIcons name="my-location" size={20} color="white" />
-            <Text className="text-white font-semibold text-center ml-2">
-              Get Current Location
-            </Text>
-          </TouchableOpacity>
         </View>
       </View>
     </>
