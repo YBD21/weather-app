@@ -24,7 +24,7 @@ const WelcomeText = () => (
 
 // Component for quick weather status
 const WeatherStatus = () => (
-  <Link href="/weather" asChild>
+  <Link href="/home" asChild>
     <Pressable>
       <View className="px-6 py-4 mx-4 bg-white rounded-xl shadow-sm">
         <Text className="text-xl text-center text-gray-800">
