@@ -49,14 +49,14 @@ const Home = () => {
     <>
       <Stack.Screen
         options={{
-          title: "Rates",
+          title: "Home",
           headerStyle: { backgroundColor: "#3B82F6" },
           headerTintColor: "white",
         }}
       />
       <View className="flex-1 bg-blue-100 px-4 py-2.5">
         <View className="space-y-6 mx-4">
-          <View className="bg-white rounded-2xl shadow-lg mt-6 overflow-hidden border border-gray-200">
+          <View className="bg-white rounded-2xl shadow-lg mt-4 overflow-hidden border border-gray-200">
             <View className="flex-row items-center px-3 py-1">
               <TouchableOpacity onPress={getLocation}>
                 <MaterialIcons
@@ -77,7 +77,7 @@ const Home = () => {
               />
               <TouchableOpacity
                 onPress={handleSearch}
-                className="bg-blue-500 p-2.5 rounded-full active:bg-blue-600"
+                className="bg-blue-500 p-3 rounded-full active:bg-blue-600"
               >
                 <FontAwesome name="search" size={18} color="white" />
               </TouchableOpacity>
@@ -85,7 +85,7 @@ const Home = () => {
           </View>
 
           {/* suggest search value */}
-          <View className="bg-white rounded-xl shadow-md px-4 py-2.5 my-1.5">
+          <View className="bg-white rounded-xl shadow-md px-4 py-2.5 my-2.5">
             {dummyLocations.map((city, index) => (
               <TouchableOpacity
                 key={index}
