@@ -5,6 +5,9 @@ import * as Location from "expo-location";
 import { FontAwesome } from "@expo/vector-icons";
 import { SearchBar } from "@/src/components/SearchBar";
 import { LocationSuggestions } from "@/src/components/LocationSuggestions";
+import { animated, useSpring } from "react-spring";
+
+const AnimatedView = animated(View);
 
 const Home = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -45,6 +48,13 @@ const Home = () => {
     handleSearch();
   };
 
+  // Animate opacity and slide on toggle using react-spring.
+  const searchBarAnimation = useSpring({
+    translateY: showSearchBar ? 0 : -1,
+    translateX: showSearchBar ? 0 : 20,
+    config: { tension: 100, friction: 10 },
+  });
+
   return (
     <>
       <Stack.Screen
@@ -56,30 +66,40 @@ const Home = () => {
       />
       <View className="flex-1 bg-blue-100 px-4 py-2.5">
         <View className="space-y-6 mx-4">
-          {showSearchBar ? (
-            <>
-              <SearchBar
-                searchQuery={searchQuery}
-                onSearchChange={setSearchQuery}
-                onSearch={handleSearch}
-                onLocationPress={getLocation}
-                hasLocation={!!location}
-              />
-              <LocationSuggestions
-                locations={dummyLocations}
-                onSelectLocation={handleLocationSelect}
-              />
-            </>
-          ) : (
-            <View className="flex-row items-center justify-end mx-3 my-2 relative">
-              <TouchableOpacity
-                onPress={() => setShowSearchBar(true)}
-                className="bg-blue-500 px-3 py-2.5 rounded-full active:bg-blue-600"
-              >
-                <FontAwesome name="search" size={18} color="white" />
-              </TouchableOpacity>
-            </View>
-          )}
+          <AnimatedView
+            style={{
+              transform: [
+                { translateX: searchBarAnimation.translateX.to((x) => x) },
+                { translateY: searchBarAnimation.translateY.to((y) => y) },
+              ],
+            }}
+            className="w-full"
+          >
+            {showSearchBar ? (
+              <>
+                <SearchBar
+                  searchQuery={searchQuery}
+                  onSearchChange={setSearchQuery}
+                  onSearch={handleSearch}
+                  onLocationPress={getLocation}
+                  hasLocation={!!location}
+                />
+                <LocationSuggestions
+                  locations={dummyLocations}
+                  onSelectLocation={handleLocationSelect}
+                />
+              </>
+            ) : (
+              <View className="flex-row items-center justify-end mx-3 my-2 relative">
+                <TouchableOpacity
+                  onPress={() => setShowSearchBar(true)}
+                  className="bg-blue-500 px-3 py-2.5 rounded-full active:bg-blue-600 transition-all duration-300"
+                >
+                  <FontAwesome name="search" size={18} color="white" />
+                </TouchableOpacity>
+              </View>
+            )}
+          </AnimatedView>
         </View>
       </View>
     </>
