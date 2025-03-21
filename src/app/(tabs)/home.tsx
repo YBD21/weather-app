@@ -5,9 +5,6 @@ import * as Location from "expo-location";
 import { FontAwesome } from "@expo/vector-icons";
 import { SearchBar } from "@/src/components/SearchBar";
 import { LocationSuggestions } from "@/src/components/LocationSuggestions";
-import { animated, useSpring } from "react-spring";
-
-const AnimatedView = animated(View);
 
 const Home = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -48,13 +45,6 @@ const Home = () => {
     handleSearch();
   };
 
-  // Animate opacity and slide on toggle using react-spring.
-  const searchBarAnimation = useSpring({
-    translateY: showSearchBar ? 0 : -1,
-    translateX: showSearchBar ? 0 : 20,
-    config: { tension: 100, friction: 10 },
-  });
-
   return (
     <>
       <Stack.Screen
@@ -66,14 +56,12 @@ const Home = () => {
       />
       <View className="flex-1 bg-blue-100 px-4 py-2.5">
         <View className="space-y-6 mx-4">
-          <AnimatedView
-            style={{
-              transform: [
-                { translateX: searchBarAnimation.translateX.to((x) => x) },
-                { translateY: searchBarAnimation.translateY.to((y) => y) },
-              ],
-            }}
-            className="w-full"
+          <View
+            className={`w-full transition-all duration-500 ease-in-out  ${
+              showSearchBar
+                ? "translate-y-0 translate-x-0"
+                : "-translate-y-2 translate-x-5"
+            }`}
           >
             {showSearchBar ? (
               <>
@@ -99,7 +87,7 @@ const Home = () => {
                 </TouchableOpacity>
               </View>
             )}
-          </AnimatedView>
+          </View>
         </View>
       </View>
     </>
