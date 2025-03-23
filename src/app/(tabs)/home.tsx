@@ -172,7 +172,7 @@ const Home = () => {
                   <Text className="text-gray-600">{day}</Text>
                   <View className="flex-row items-center">
                     <Feather name="cloud" size={20} color="#4B5563" />
-                    <Text className="text-gray-600 ml-2">23° / 18°</Text>
+                    <Text className="text-gray-600 ml-2">23&#176;</Text>
                   </View>
                 </View>
               ))}
