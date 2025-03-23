@@ -16,7 +16,7 @@ export const SearchBar = ({
   onLocationPress,
   hasLocation,
 }: SearchBarProps) => (
-  <View className="bg-white rounded-2xl shadow-lg mt-1 overflow-hidden border border-gray-200">
+  <View className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-200">
     <View className="flex-row items-center px-3 py-1">
       <TouchableOpacity onPress={onLocationPress}>
         <MaterialIcons

@@ -81,14 +81,14 @@ const Home = () => {
             {/* Search Section */}
             {/* later add animation libary for this */}
             <View
-              className={`mb-4 transition-all duration-500 ease-in-out !z-50  ${
+              className={`!z-50 mb-2 transition-all duration-500 ease-in-out  ${
                 showSearchBar
                   ? "translate-y-0 translate-x-0"
                   : "-translate-y-2 translate-x-1"
               }`}
             >
               {showSearchBar ? (
-                <View className="relative w-full flex">
+                <View className="relative w-full flex -mt-2">
                   <SearchBar
                     searchQuery={searchQuery}
                     onSearchChange={setSearchQuery}
