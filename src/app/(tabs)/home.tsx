@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import { Stack } from "expo-router";
-import { View, TouchableOpacity, Alert, Keyboard } from "react-native";
+import {
+  View,
+  TouchableOpacity,
+  Alert,
+  Keyboard,
+  Image,
+  Text,
+} from "react-native";
 import * as Location from "expo-location";
 import { FontAwesome } from "@expo/vector-icons";
 import { SearchBar } from "@/src/components/SearchBar";
@@ -87,6 +94,37 @@ const Home = () => {
                 </TouchableOpacity>
               </View>
             )}
+            {/* forcast section */}
+            <View className=" mx-4 flex justify-around mb-2">
+              {/* weather location and name */}
+              <View className="flex items-center justify-center mt-8">
+                <Text className="text-3xl font-semibold text-gray-800">
+                  London
+                </Text>
+                <Text className="text-xl text-gray-600">United Kingdom</Text>
+              </View>
+              {/* weather image */}
+              <View className="flex-row items-center justify-center">
+                <Image
+                  source={require("../../../assets/cloud-images/partly-cloudy.png")}
+                  className="w-52 h-52"
+                />
+              </View>
+              {/* degree celcius*/}
+
+              <View className="flex items-center justify-center space-y-2">
+                <Text className="text-5xl font-semibold text-gray-800">
+                  20°C
+                </Text>
+              </View>
+              {/* other stats */}
+              <View className="flex-row justify-between space-y-2 mx-4">
+                <View className="flex-row space-x-2 items-center">
+                  <Text className="text-gray-800">Wind Speed</Text>
+                  <Text className="text-gray-600">60 Km/hr</Text>
+                </View>
+              </View>
+            </View>
           </View>
         </View>
       </View>
