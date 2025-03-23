@@ -10,7 +10,7 @@ export const LocationSuggestions = ({
   locations,
   onSelectLocation,
 }: LocationSuggestionsProps) => (
-  <View className="bg-white rounded-xl shadow-md px-4 py-2.5 my-2.5">
+  <View className="absolute top-14 left-0 w-full bg-white rounded-xl shadow-md px-4 py-2.5 my-2.5">
     {locations.map((city, index) => (
       <TouchableOpacity
         key={index}

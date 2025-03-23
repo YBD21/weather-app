@@ -81,14 +81,14 @@ const Home = () => {
             {/* Search Section */}
             {/* later add animation libary for this */}
             <View
-              className={`mb-4 transition-all duration-500 ease-in-out  ${
+              className={`mb-4 transition-all duration-500 ease-in-out !z-50  ${
                 showSearchBar
                   ? "translate-y-0 translate-x-0"
                   : "-translate-y-2 translate-x-1"
               }`}
             >
               {showSearchBar ? (
-                <>
+                <View className="relative w-full flex">
                   <SearchBar
                     searchQuery={searchQuery}
                     onSearchChange={setSearchQuery}
@@ -100,7 +100,7 @@ const Home = () => {
                     locations={dummyLocations}
                     onSelectLocation={handleLocationSelect}
                   />
-                </>
+                </View>
               ) : (
                 <View className="flex-row justify-end items-center">
                   <TouchableOpacity
@@ -125,7 +125,7 @@ const Home = () => {
               <View className="items-center mb-6">
                 <Image
                   source={require("../../../assets/cloud-images/partly-cloudy.png")}
-                  className="w-48 h-48"
+                  className="!w-36 !h-36"
                 />
               </View>
 
