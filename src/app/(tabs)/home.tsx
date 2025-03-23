@@ -7,9 +7,13 @@ import {
   Keyboard,
   Image,
   Text,
+  SafeAreaView,
+  ScrollView,
 } from "react-native";
 import * as Location from "expo-location";
 import { FontAwesome } from "@expo/vector-icons";
+import Feather from "@expo/vector-icons/Feather";
+import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 import { SearchBar } from "@/src/components/SearchBar";
 import { LocationSuggestions } from "@/src/components/LocationSuggestions";
 
@@ -21,6 +25,16 @@ const Home = () => {
   const [showSearchBar, setShowSearchBar] = useState(false);
 
   const dummyLocations = ["London, United Kingdom", "New York, USA"];
+
+  const days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
 
   const handleSearch = () => {
     Keyboard.dismiss();
@@ -57,77 +71,115 @@ const Home = () => {
       <Stack.Screen
         options={{
           title: "Home",
-          headerStyle: { backgroundColor: "#3B82F6" },
-          headerTintColor: "white",
+          headerStyle: { backgroundColor: "#dbeafe" },
+          headerTintColor: " #1f2937",
         }}
       />
-      <View className="flex-1 bg-blue-100 px-4 py-2.5">
-        <View className="space-y-6 mx-4">
-          <View
-            className={`w-full transition-all duration-500 ease-in-out  ${
-              showSearchBar
-                ? "translate-y-0 translate-x-0"
-                : "-translate-y-2 translate-x-5"
-            }`}
-          >
-            {showSearchBar ? (
-              <>
-                <SearchBar
-                  searchQuery={searchQuery}
-                  onSearchChange={setSearchQuery}
-                  onSearch={handleSearch}
-                  onLocationPress={getLocation}
-                  hasLocation={!!location}
-                />
-                <LocationSuggestions
-                  locations={dummyLocations}
-                  onSelectLocation={handleLocationSelect}
-                />
-              </>
-            ) : (
-              <View className="flex-row items-center justify-end mx-3 my-2 relative">
-                <TouchableOpacity
-                  onPress={() => setShowSearchBar(true)}
-                  className="bg-blue-500 px-3 py-2.5 rounded-full active:bg-blue-600 transition-all duration-300"
-                >
-                  <FontAwesome name="search" size={18} color="white" />
-                </TouchableOpacity>
+      <SafeAreaView className="flex-1 bg-blue-100">
+        <ScrollView className="flex-1">
+          <View className="px-4 py-5">
+            {/* Search Section */}
+            {/* later add animation libary for this */}
+            <View
+              className={`mb-4 transition-all duration-500 ease-in-out  ${
+                showSearchBar
+                  ? "translate-y-0 translate-x-0"
+                  : "-translate-y-2 translate-x-1"
+              }`}
+            >
+              {showSearchBar ? (
+                <>
+                  <SearchBar
+                    searchQuery={searchQuery}
+                    onSearchChange={setSearchQuery}
+                    onSearch={handleSearch}
+                    onLocationPress={getLocation}
+                    hasLocation={!!location}
+                  />
+                  <LocationSuggestions
+                    locations={dummyLocations}
+                    onSelectLocation={handleLocationSelect}
+                  />
+                </>
+              ) : (
+                <View className="flex-row justify-end items-center">
+                  <TouchableOpacity
+                    onPress={() => setShowSearchBar(true)}
+                    className="bg-blue-600 px-3 py-2.5 rounded-full"
+                  >
+                    <FontAwesome name="search" size={20} color="white" />
+                  </TouchableOpacity>
+                </View>
+              )}
+            </View>
+
+            {/* Weather Card */}
+            <View className="bg-white rounded-3xl p-6 shadow-lg">
+              {/* Location Info */}
+              <View className="items-center mb-6">
+                <Text className="text-3xl font-bold text-gray-800">London</Text>
+                <Text className="text-lg text-gray-600">United Kingdom</Text>
               </View>
-            )}
-            {/* forcast section */}
-            <View className=" mx-4 flex justify-around mb-2">
-              {/* weather location and name */}
-              <View className="flex items-center justify-center mt-8">
-                <Text className="text-3xl font-semibold text-gray-800">
-                  London
-                </Text>
-                <Text className="text-xl text-gray-600">United Kingdom</Text>
-              </View>
-              {/* weather image */}
-              <View className="flex-row items-center justify-center">
+
+              {/* Weather Image */}
+              <View className="items-center mb-6">
                 <Image
                   source={require("../../../assets/cloud-images/partly-cloudy.png")}
-                  className="w-52 h-52"
+                  className="w-48 h-48"
                 />
               </View>
-              {/* degree celcius*/}
 
-              <View className="flex items-center justify-center space-y-2">
-                <Text className="text-5xl font-semibold text-gray-800">
-                  20°C
+              {/* Temperature */}
+              <View className="items-center mb-8">
+                <Text className="text-6xl font-bold text-gray-800">20°</Text>
+                <Text className="text-xl text-gray-600 mt-2">
+                  Partly Cloudy
                 </Text>
               </View>
-              {/* other stats */}
-              <View className="flex-row justify-between space-y-2 mx-4">
-                <View className="flex-row space-x-2 items-center">
-                  <Text className="text-gray-800">Wind Speed</Text>
-                  <Text className="text-gray-600">60 Km/hr</Text>
+
+              {/* Weather Stats */}
+              <View className="flex-row justify-between px-4 py-4 bg-gray-50 rounded-2xl">
+                <View className="items-center">
+                  <Feather name="wind" size={24} color="#4B5563" />
+                  <Text className="text-sm text-gray-600 mt-2">60 km/h</Text>
+                  <Text className="text-xs text-gray-500">Wind</Text>
+                </View>
+
+                <View className="items-center">
+                  <SimpleLineIcons name="drop" size={24} color="#4B5563" />
+                  <Text className="text-sm text-gray-600 mt-2">23%</Text>
+                  <Text className="text-xs text-gray-500">Humidity</Text>
+                </View>
+
+                <View className="items-center">
+                  <Feather name="sunrise" size={24} color="#4B5563" />
+                  <Text className="text-sm text-gray-600 mt-2">3:45 PM</Text>
+                  <Text className="text-xs text-gray-500">Sunrise</Text>
                 </View>
               </View>
             </View>
+
+            {/* Weekly Forecast */}
+            <View className="mt-6 bg-white rounded-3xl p-6 shadow-lg">
+              <Text className="text-xl font-bold text-gray-800 mb-4">
+                Weekly Forecast
+              </Text>
+              {days.map((day) => (
+                <View
+                  key={day}
+                  className="flex-row justify-between items-center py-3 border-b border-gray-100"
+                >
+                  <Text className="text-gray-600">{day}</Text>
+                  <View className="flex-row items-center">
+                    <Feather name="cloud" size={20} color="#4B5563" />
+                    <Text className="text-gray-600 ml-2">23° / 18°</Text>
+                  </View>
+                </View>
+              ))}
+            </View>
           </View>
-        </View>
-      </View>
+        </ScrollView>
+      </SafeAreaView>
     </>
   );
 };
