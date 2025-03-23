@@ -1,12 +1,13 @@
 import { Pressable, Text, View } from "react-native";
 import { Link, Stack } from "expo-router";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 // Component for the weather header section
 const Header = () => (
   //  later add weather icon and temperature here
   <View className="flex items-center justify-center">
     <View className="w-24 h-24 bg-blue-500 rounded-full flex items-center justify-center">
-      <Text className="text-white text-4xl">☀️</Text>
+      <MaterialIcons name="sunny" className="!text-5xl !text-yellow-400" />
     </View>
   </View>
 );

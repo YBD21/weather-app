@@ -1,12 +1,15 @@
 import { Link, Stack } from "expo-router";
-import { View, Text, Pressable } from "react-native";
+import { View, Text, Pressable, Image } from "react-native";
 
 export default function NotFoundScreen() {
   return (
     <>
       <Stack.Screen options={{ headerShown: false }} />
       <View className="flex-1 items-center justify-center bg-blue-50 px-6">
-        <Text className="text-8xl mb-4 py-4">🌧️</Text>
+        <Image
+          source={require("../../assets/rainy-cloud.png")}
+          className="!mb-4 !py-4 !w-40 !h-40"
+        />
         <Text className="text-9xl font-bold text-blue-600">404</Text>
         <Text className="mb-2 text-2xl font-bold text-gray-600">
           Forecast Not Found !
