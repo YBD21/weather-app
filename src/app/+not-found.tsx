@@ -7,7 +7,7 @@ export default function NotFoundScreen() {
       <Stack.Screen options={{ headerShown: false }} />
       <View className="flex-1 items-center justify-center bg-blue-50 px-6">
         <Image
-          source={require("../../assets/rainy-cloud.png")}
+          source={require("../../assets/cloud-images/rainy-cloud.png")}
           className="!mb-4 !py-4 !w-40 !h-40"
         />
         <Text className="text-9xl font-bold text-blue-600">404</Text>
