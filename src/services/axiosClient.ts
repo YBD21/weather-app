@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const ROOT_URL = `http://api.openweathermap.org/data/2.5/`;
+const ROOT_URL = process.env.EXPO_PUBLIC_ROOT_URL as string;
 
 const axiosClient = () => {
   return axios.create({
