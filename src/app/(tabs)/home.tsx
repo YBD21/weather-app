@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { Stack } from "expo-router";
 import {
   View,
@@ -48,11 +48,18 @@ const Home = () => {
 
   const { forecastMutation, locationMutation } = useWeatherAction();
 
-  const handleSearch = handleSubmit(async (data) => {
-    Keyboard.dismiss();
-    console.log("Search query:", data.searchQuery);
-    setShowSearchBar(false);
-  });
+  const handleSearch = useCallback(
+    handleSubmit(async (data) => {
+      Keyboard.dismiss();
+      if (!data.searchQuery) {
+        return setShowSearchBar(false);
+      }
+      console.log("Search query:", data.searchQuery);
+      console.log("Search count:", data.searchQuery.length);
+      setShowSearchBar(false);
+    }),
+    []
+  );
 
   const getLocation = async () => {
     try {
@@ -73,10 +80,13 @@ const Home = () => {
     }
   };
 
-  const handleLocationSelect = (selectedLocation: string) => {
-    setValue("searchQuery", selectedLocation);
-    handleSearch();
-  };
+  const handleLocationSelect = useCallback(
+    (selectedLocation: string) => {
+      setValue("searchQuery", selectedLocation);
+      handleSearch();
+    },
+    [handleSearch, setValue]
+  );
 
   return (
     <>
