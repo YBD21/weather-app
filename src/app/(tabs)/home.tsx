@@ -48,16 +48,20 @@ const Home = () => {
 
   const { forecastMutation, locationMutation } = useWeatherAction();
 
-  const handleSearch = useCallback(
+  const dhandleSearch = useCallback(
     handleSubmit(async (data) => {
       Keyboard.dismiss();
       if (!data.searchQuery || data.searchQuery?.length <= 2) {
         return setShowSearchBar(false);
       }
 
-      const respond = await forecastMutation.mutateAsync({
+      // const respond = await forecastMutation.mutateAsync({
+      //   cityName: data.searchQuery,
+      //   days: 7,
+      // });
+
+      const respond = await locationMutation.mutateAsync({
         cityName: data.searchQuery,
-        days: 7,
       });
 
       console.log("Forecast response:", respond);
@@ -65,6 +69,16 @@ const Home = () => {
       // console.log("Search query:", data.searchQuery);
       // console.log("Search count:", data.searchQuery.length);
       setShowSearchBar(false);
+    }),
+    []
+  );
+
+  const handleSearch = useCallback(
+    handleSubmit(async (data) => {
+      if (!data.searchQuery || data.searchQuery?.length <= 2) {
+        return setShowSearchBar(false);
+      }
+      console.log("Search query:", data.searchQuery);
     }),
     []
   );
@@ -92,6 +106,7 @@ const Home = () => {
     (selectedLocation: string) => {
       setValue("searchQuery", selectedLocation);
       handleSearch();
+      setShowSearchBar(false);
     },
     [handleSearch, setValue]
   );

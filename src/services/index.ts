@@ -22,7 +22,7 @@ export const getForecast = async ({
 
 export const getlocation = async ({ cityName }: LocationParams) => {
   const response = await client().get(
-    `/forecast.json?key=${apiKey}&q=${cityName}`
+    `/search.json?key=${apiKey}&q=${cityName}`
   );
   return response.data;
 };
