@@ -1,16 +1,19 @@
 import { apiKey } from "../constants";
 import client from "./axiosClient";
 
-interface ForecastParams {
+export interface ForecastParams {
   cityName: string;
   days: number;
 }
 
-interface LocationParams {
+export interface LocationParams {
   cityName: string;
 }
 
-export const getForecast = async ({ cityName, days }: ForecastParams) => {
+export const getForecast = async ({
+  cityName,
+  days,
+}: ForecastParams): Promise<any> => {
   const response = await client().get(
     `/forecast.json?key=${apiKey}&q=${cityName}&days=${days}&aqi=no&alerts=no`
   );

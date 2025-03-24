@@ -51,11 +51,19 @@ const Home = () => {
   const handleSearch = useCallback(
     handleSubmit(async (data) => {
       Keyboard.dismiss();
-      if (!data.searchQuery) {
+      if (!data.searchQuery || data.searchQuery?.length <= 2) {
         return setShowSearchBar(false);
       }
-      console.log("Search query:", data.searchQuery);
-      console.log("Search count:", data.searchQuery.length);
+
+      const respond = await forecastMutation.mutateAsync({
+        cityName: data.searchQuery,
+        days: 7,
+      });
+
+      console.log("Forecast response:", respond);
+
+      // console.log("Search query:", data.searchQuery);
+      // console.log("Search count:", data.searchQuery.length);
       setShowSearchBar(false);
     }),
     []

@@ -1,9 +1,14 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { getForecast, getlocation } from "../services";
+import {
+  ForecastParams,
+  getForecast,
+  getlocation,
+  LocationParams,
+} from "../services";
 
-const createMutation = (
+const createMutation = <T>(
   queryClient: ReturnType<typeof useQueryClient>,
-  mutationFn: any,
+  mutationFn: (variables: T) => Promise<any>, // Ensure the function takes parameters
   queryKey: string
 ) => {
   return useMutation({
@@ -20,8 +25,16 @@ const createMutation = (
 export const useWeatherAction = () => {
   const queryClient = useQueryClient();
 
-  const forecastMutation = createMutation(queryClient, getForecast, "forecast");
-  const locationMutation = createMutation(queryClient, getlocation, "location");
+  const forecastMutation = createMutation<ForecastParams>(
+    queryClient,
+    getForecast,
+    "forecast"
+  );
+  const locationMutation = createMutation<LocationParams>(
+    queryClient,
+    getlocation,
+    "location"
+  );
 
   return {
     forecastMutation,
