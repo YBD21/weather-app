@@ -1,17 +1,17 @@
 import { View, TextInput, TouchableOpacity } from "react-native";
 import { MaterialIcons, FontAwesome } from "@expo/vector-icons";
+import { Control, Controller } from "react-hook-form";
+import { SearchFormData } from "../schemas/searchSchema";
 
 interface SearchBarProps {
-  searchQuery: string;
-  onSearchChange: (text: string) => void;
+  control: Control<SearchFormData>;
   onSearch: () => void;
   onLocationPress: () => void;
   hasLocation: boolean;
 }
 
 export const SearchBar = ({
-  searchQuery,
-  onSearchChange,
+  control,
   onSearch,
   onLocationPress,
   hasLocation,
@@ -25,15 +25,22 @@ export const SearchBar = ({
           className="mr-2 !text-blue-500"
         />
       </TouchableOpacity>
-      <TextInput
-        className="flex-1 py-3 px-2 text-gray-700 font-medium text-base"
-        placeholder="Search for a location..."
-        placeholderTextColor="#9CA3AF"
-        value={searchQuery}
-        onChangeText={onSearchChange}
-        onSubmitEditing={onSearch}
-        returnKeyType="search"
-        autoCapitalize="words"
+      <Controller
+        control={control}
+        name="searchQuery"
+        render={({ field: { onChange, value }, fieldState: { error } }) => (
+          <TextInput
+            className={`flex-1 py-3 px-2 text-gray-700 font-medium text-base ${
+              error ? "border-red-500" : ""
+            }`}
+            placeholder="Search for a location..."
+            placeholderTextColor="#9CA3AF"
+            value={value}
+            onChangeText={onChange}
+            onSubmitEditing={onSearch}
+            returnKeyType="search"
+          />
+        )}
       />
       <TouchableOpacity
         onPress={onSearch}

@@ -16,13 +16,23 @@ import Feather from "@expo/vector-icons/Feather";
 import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 import { SearchBar } from "@/src/components/SearchBar";
 import { LocationSuggestions } from "@/src/components/LocationSuggestions";
+import { useWeatherAction } from "@/src/hooks/useWeatherAction";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { searchSchema, SearchFormData } from "@/src/schemas/searchSchema";
 
 const Home = () => {
-  const [searchQuery, setSearchQuery] = useState("");
   const [location, setLocation] = useState<Location.LocationObject | null>(
     null
   );
   const [showSearchBar, setShowSearchBar] = useState(false);
+
+  const { control, handleSubmit, setValue } = useForm<SearchFormData>({
+    resolver: yupResolver(searchSchema),
+    defaultValues: {
+      searchQuery: "",
+    },
+  });
 
   const dummyLocations = ["London, United Kingdom", "New York, USA"];
 
@@ -36,11 +46,13 @@ const Home = () => {
     "Saturday",
   ];
 
-  const handleSearch = () => {
+  const { forecastMutation, locationMutation } = useWeatherAction();
+
+  const handleSearch = handleSubmit(async (data) => {
     Keyboard.dismiss();
-    console.log("Search query:", searchQuery);
+    console.log("Search query:", data.searchQuery);
     setShowSearchBar(false);
-  };
+  });
 
   const getLocation = async () => {
     try {
@@ -62,7 +74,7 @@ const Home = () => {
   };
 
   const handleLocationSelect = (selectedLocation: string) => {
-    setSearchQuery(selectedLocation);
+    setValue("searchQuery", selectedLocation);
     handleSearch();
   };
 
@@ -89,8 +101,7 @@ const Home = () => {
             {showSearchBar ? (
               <View className="relative w-full flex -mt-2">
                 <SearchBar
-                  searchQuery={searchQuery}
-                  onSearchChange={setSearchQuery}
+                  control={control}
                   onSearch={handleSearch}
                   onLocationPress={getLocation}
                   hasLocation={!!location}
