@@ -20,12 +20,14 @@ import { useWeatherAction } from "@/src/hooks/useWeatherAction";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { searchSchema, SearchFormData } from "@/src/schemas/searchSchema";
+import { useSearchBarStore } from "@/src/store/useStore";
 
 const Home = () => {
   const [location, setLocation] = useState<Location.LocationObject | null>(
     null
   );
-  const [showSearchBar, setShowSearchBar] = useState(false);
+
+  const { showSearchBar, setShowSearchBar } = useSearchBarStore();
 
   const { control, handleSubmit, setValue } = useForm<SearchFormData>({
     resolver: yupResolver(searchSchema),
