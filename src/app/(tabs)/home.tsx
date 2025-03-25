@@ -116,8 +116,8 @@ const Home = () => {
   );
 
   const handleOutsidePress = () => {
-    if (showSearchBar && Platform.OS !== "web") {
-      console.log("Tapped outside search bar");
+    if (showSearchBar) {
+      // console.log("Tapped outside search bar");
       setShowSearchBar(false);
     }
   };

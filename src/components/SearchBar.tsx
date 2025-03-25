@@ -41,13 +41,13 @@ const SearchInput = ({
       name="searchQuery"
       render={({ field: { onChange, value }, fieldState: { error } }) => (
         <TextInput
-          className={`flex-1 py-3 px-2 text-gray-700 font-medium text-base ${
+          className={`flex-1 px-2 py-1.5 text-gray-700 font-medium text-base focus:outline-none ${
             error ? "border-red-500" : ""
           }`}
           placeholder="Search for a location..."
           placeholderTextColor="#9CA3AF"
           value={value}
-          autoFocus={Platform.OS === "web" ? false : true}
+          autoFocus={true}
           onChangeText={onChange}
           onSubmitEditing={onSearch}
           returnKeyType="search"
