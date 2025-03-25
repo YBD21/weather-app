@@ -52,37 +52,42 @@ const Home = () => {
 
   const { forecastMutation, locationMutation } = useWeatherAction();
 
-  const dhandleSearch = useCallback(
-    handleSubmit(async (data) => {
-      Keyboard.dismiss();
-      if (!data.searchQuery || data.searchQuery?.length <= 2) {
-        return setShowSearchBar(false);
-      }
+  // const dhandleSearch = useCallback(
+  //   handleSubmit(async (data) => {
+  //     Keyboard.dismiss();
+  //     if (!data.searchQuery || data.searchQuery?.length <= 2) {
+  //       return setShowSearchBar(false);
+  //     }
 
-      // const respond = await forecastMutation.mutateAsync({
-      //   cityName: data.searchQuery,
-      //   days: 7,
-      // });
+  //     // const respond = await forecastMutation.mutateAsync({
+  //     //   cityName: data.searchQuery,
+  //     //   days: 7,
+  //     // });
 
-      const respond = await locationMutation.mutateAsync({
-        cityName: data.searchQuery,
-      });
+  //     const respond = await locationMutation.mutateAsync({
+  //       cityName: data.searchQuery,
+  //     });
 
-      console.log("Forecast response:", respond);
+  //     console.log("Forecast response:", respond);
 
-      // console.log("Search query:", data.searchQuery);
-      // console.log("Search count:", data.searchQuery.length);
-      setShowSearchBar(false);
-    }),
-    []
-  );
+  //     // console.log("Search query:", data.searchQuery);
+  //     // console.log("Search count:", data.searchQuery.length);
+  //     setShowSearchBar(false);
+  //   }),
+  //   []
+  // );
 
   const handleSearch = useCallback(
     handleSubmit(async (data) => {
       if (!data.searchQuery || data.searchQuery?.length <= 2) {
         return setShowSearchBar(false);
       }
-      console.log("Search query:", data.searchQuery);
+
+      const respond = await locationMutation.mutateAsync({
+        cityName: data.searchQuery,
+      });
+
+      // console.log("Search query:", data.searchQuery);
     }),
     []
   );
@@ -230,13 +235,18 @@ const Home = () => {
 
             <ScrollView
               horizontal={true}
-              showsHorizontalScrollIndicator={Platform.OS === "web"}
-              className="!flex-row !overflow-x-scroll !space-x-4"
+              showsHorizontalScrollIndicator={
+                Platform.OS === "web" ? true : false
+              }
+              contentContainerStyle={{
+                gap: Platform.OS === "web" ? 48 : 2,
+                justifyContent: "space-between",
+              }}
             >
               {days.map((day) => (
                 <View
                   key={day}
-                  className={`bg-blue-50 rounded-2xl px-2 py-3.5 mr-4 w-32 shadow-sm ${
+                  className={`bg-blue-50 rounded-2xl px-2 py-3.5 mr-4 w-32 shadow-sm over ${
                     Platform.OS === "web" ? "my-2" : "my-1.5"
                   }`}
                 >
