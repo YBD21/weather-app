@@ -47,7 +47,7 @@ const SearchInput = ({
           placeholder="Search for a location..."
           placeholderTextColor="#9CA3AF"
           value={value}
-          autoFocus={true}
+          autoFocus={Platform.OS === "web" ? false : true}
           onChangeText={onChange}
           onSubmitEditing={onSearch}
           returnKeyType="search"
