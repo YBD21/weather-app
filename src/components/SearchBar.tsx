@@ -78,7 +78,7 @@ export const SearchBar = ({
     const keyboardDidHideListener = Keyboard.addListener(
       Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide",
       () => {
-        console.log("Keyboard is dismissed");
+        // console.log("Keyboard is dismissed");
         setShowSearchBar(false);
       }
     );
