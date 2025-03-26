@@ -34,7 +34,7 @@ const SearchInput = ({
         if (value.trim()) {
           onSearch();
         }
-      }, 500),
+      }, 800),
     [onSearch]
   );
 

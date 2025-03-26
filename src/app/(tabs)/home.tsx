@@ -22,7 +22,12 @@ import { useWeatherAction } from "@/src/hooks/useWeatherAction";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { searchSchema, SearchFormData } from "@/src/schemas/searchSchema";
-import { useLocationSuggestion, useSearchBarStore } from "@/src/store/useStore";
+import {
+  useLocationSuggestion,
+  useSearchBarStore,
+  useWeatherStore,
+} from "@/src/store/useStore";
+import { weatherImages } from "@/src/constants";
 
 const Home = () => {
   const [location, setLocation] = useState<Location.LocationObject | null>(
@@ -33,6 +38,8 @@ const Home = () => {
 
   const { suggestions, setSuggestions } = useLocationSuggestion();
 
+  const { forecast, setForecast } = useWeatherStore();
+
   const { control, handleSubmit, setValue } = useForm<SearchFormData>({
     resolver: yupResolver(searchSchema),
     defaultValues: {
@@ -40,30 +47,19 @@ const Home = () => {
     },
   });
 
-  const days = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
-
   const { forecastMutation, locationMutation } = useWeatherAction();
 
   const handleSearch = useCallback(async (cityName: string) => {
     // Keyboard.dismiss();
-
+    setShowSearchBar(false);
     const forcastData = await forecastMutation.mutateAsync({
       cityName,
       days: 7,
     });
 
-    console.log("Forecast response:", forcastData);
-    // take this respnd and update the UI
+    // console.log("Forecast response:", forcastData);
 
-    setShowSearchBar(false);
+    setForecast(forcastData);
   }, []);
 
   // use debounce here
@@ -171,24 +167,33 @@ const Home = () => {
                 {/* Location Info */}
                 <View className="items-center mb-6">
                   <Text className="text-3xl font-bold text-gray-800">
-                    London
+                    {forecast?.location.name ?? "London"}
                   </Text>
-                  <Text className="text-lg text-gray-600">United Kingdom</Text>
+                  <Text className="text-lg text-gray-600">
+                    {forecast?.location.country ?? "United Kingdom"}
+                  </Text>
                 </View>
 
                 {/* Weather Image */}
                 <View className="items-center mb-6">
                   <Image
-                    source={require("../../../assets/cloud-images/partly-cloudy.png")}
+                    source={
+                      weatherImages[
+                        forecast?.current?.condition
+                          ?.text as keyof typeof weatherImages
+                      ] ?? weatherImages.other
+                    }
                     className="!w-36 !h-36"
                   />
                 </View>
 
                 {/* Temperature */}
                 <View className="items-center mb-8">
-                  <Text className="text-6xl font-bold text-gray-800">20°</Text>
+                  <Text className="text-6xl font-bold text-gray-800">
+                    {`${Math.round(forecast?.current?.temp_c ?? 20)}°`}
+                  </Text>
                   <Text className="text-xl text-gray-600 mt-2">
-                    Partly Cloudy
+                    {forecast?.current?.condition?.text ?? "Partly Cloudy"}
                   </Text>
                 </View>
 
@@ -196,19 +201,26 @@ const Home = () => {
                 <View className="flex-row justify-between px-6 py-4 bg-blue-50 rounded-2xl mx-2.5">
                   <View className="items-center py-1">
                     <Feather name="wind" size={24} color="#4B5563" />
-                    <Text className="text-sm text-gray-600 mt-2">60 km/h</Text>
+                    <Text className="text-sm text-gray-600 mt-2">
+                      {`${Math.round(forecast?.current?.wind_kph ?? 60)}km/h`}
+                    </Text>
                     <Text className="text-xs text-gray-500">Wind</Text>
                   </View>
 
                   <View className="items-center py-1">
                     <SimpleLineIcons name="drop" size={24} color="#4B5563" />
-                    <Text className="text-sm text-gray-600 mt-2">23%</Text>
+                    <Text className="text-sm text-gray-600 mt-2">
+                      {forecast?.current?.humidity ?? 23}%
+                    </Text>
                     <Text className="text-xs text-gray-500">Humidity</Text>
                   </View>
 
                   <View className="items-center py-1">
                     <Feather name="sunrise" size={24} color="#4B5563" />
-                    <Text className="text-sm text-gray-600 mt-2">3:45 PM</Text>
+                    <Text className="text-sm text-gray-600 mt-2">
+                      {forecast?.forecast?.forecastday?.[0]?.astro?.sunrise ??
+                        "3:45 PM"}
+                    </Text>
                     <Text className="text-xs text-gray-500">Sunrise</Text>
                   </View>
                 </View>
@@ -235,20 +247,31 @@ const Home = () => {
                 justifyContent: "space-between",
               }}
             >
-              {days.map((day) => (
-                <View
-                  key={day}
-                  className={`bg-blue-50 rounded-2xl px-2 py-3.5 mr-4 w-32 shadow-sm over ${
-                    Platform.OS === "web" ? "my-2" : "my-1.5"
-                  }`}
-                >
-                  <Text className="text-gray-600 text-center mb-2">{day}</Text>
-                  <View className="items-center">
-                    <Feather name="cloud" size={20} color="#4B5563" />
-                    <Text className="text-gray-600 mt-2">23&#176;</Text>
+              {forecast?.forecast?.forecastday?.map(
+                (
+                  item: { date: string; day: { avgtemp_c: number } },
+                  index: number
+                ) => (
+                  <View
+                    key={index}
+                    className={`bg-blue-50 rounded-2xl px-2 py-3.5 mr-4 w-32 shadow-sm over ${
+                      Platform.OS === "web" ? "my-2" : "my-1.5"
+                    }`}
+                  >
+                    <Text className="text-gray-600 text-center mb-2">
+                      {new Date(item.date).toLocaleDateString("en-US", {
+                        weekday: "short",
+                      })}
+                    </Text>
+                    <View className="items-center">
+                      <Feather name="cloud" size={20} color="#4B5563" />
+                      <Text className="text-gray-600 mt-2">
+                        {Math.round(item.day.avgtemp_c)}&#176;
+                      </Text>
+                    </View>
                   </View>
-                </View>
-              ))}
+                )
+              )}
             </ScrollView>
           </View>
         </View>
