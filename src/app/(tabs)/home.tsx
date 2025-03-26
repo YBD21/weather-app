@@ -11,7 +11,7 @@ import * as Location from "expo-location";
 import { FontAwesome } from "@expo/vector-icons";
 import { SearchBar } from "@/src/components/SearchBar";
 import { LocationSuggestions } from "@/src/components/LocationSuggestions";
-import { useWeatherAction } from "@/src/hooks/useWeatherAction";
+import { useWeather } from "@/src/hooks/useWeatherAction";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { searchSchema, SearchFormData } from "@/src/schemas/searchSchema";
@@ -39,8 +39,11 @@ const Home = () => {
     },
   });
 
-  const { forecastMutation, locationMutation, forecastByCoordinatesMutation } =
-    useWeatherAction();
+  const {
+    forecast: forecastMutation,
+    location: locationMutation,
+    geoForecast: forecastByCoordinatesMutation,
+  } = useWeather();
 
   // Fetch weather data by city name
   const handleSearch = useCallback(
