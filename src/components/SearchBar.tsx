@@ -2,6 +2,7 @@ import { View, TextInput, TouchableOpacity } from "react-native";
 import { MaterialIcons, FontAwesome } from "@expo/vector-icons";
 import { Control, Controller } from "react-hook-form";
 import { SearchFormData } from "../schemas/searchSchema";
+import { useEffect, useMemo } from "react";
 
 interface SearchBarProps {
   control: Control<SearchFormData>;
@@ -27,6 +28,22 @@ const SearchInput = ({
   control,
   onSearch,
 }: Pick<SearchBarProps, "control" | "onSearch">) => {
+  const debouncedSearch = useMemo(
+    () =>
+      debounce((value: string) => {
+        if (value.trim()) {
+          onSearch();
+        }
+      }, 500),
+    [onSearch]
+  );
+
+  useEffect(() => {
+    return () => {
+      debouncedSearch.cancel();
+    };
+  }, [debouncedSearch]);
+
   return (
     <Controller
       control={control}
@@ -40,7 +57,11 @@ const SearchInput = ({
           placeholderTextColor="#9CA3AF"
           value={value}
           autoFocus={true}
-          onChangeText={onChange}
+          onChangeText={(text) => {
+            onChange(text);
+            debouncedSearch(text);
+          }}
+          onEndEditing={() => debouncedSearch.cancel()}
           onSubmitEditing={onSearch}
           returnKeyType="search"
         />
@@ -89,3 +110,18 @@ export const SearchBar = ({
     </View>
   );
 };
+
+function debounce(func: (value: string) => void, delay: number) {
+  let timeoutId: NodeJS.Timeout;
+
+  const debouncedFunction = (value: string) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => func(value), delay);
+  };
+
+  debouncedFunction.cancel = () => {
+    clearTimeout(timeoutId);
+  };
+
+  return debouncedFunction;
+}

@@ -55,28 +55,29 @@ const Home = () => {
   const handleSearch = useCallback(async (cityName: string) => {
     // Keyboard.dismiss();
 
-    const respond = await forecastMutation.mutateAsync({
+    const forcastData = await forecastMutation.mutateAsync({
       cityName,
       days: 7,
     });
 
-    console.log("Forecast response:", respond);
+    console.log("Forecast response:", forcastData);
+    // take this respnd and update the UI
 
     setShowSearchBar(false);
   }, []);
 
+  // use debounce here
   const handleSearchSuggestion = useCallback(
     handleSubmit(async (data) => {
-      if (!data.searchQuery || data.searchQuery?.length <= 2) {
+      if (!data.searchQuery || data.searchQuery?.length === 0) {
         return setShowSearchBar(false);
+      } else if (data.searchQuery.length > 2) {
+        const suggestionsList = await locationMutation.mutateAsync({
+          cityName: data.searchQuery,
+        });
+
+        setSuggestions(suggestionsList);
       }
-
-      const suggestionsList = await locationMutation.mutateAsync({
-        cityName: data.searchQuery,
-      });
-
-      setSuggestions(suggestionsList);
-
       // console.log("suggestionsList:", suggestionsList);
     }),
     []

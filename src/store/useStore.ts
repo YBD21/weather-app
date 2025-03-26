@@ -33,3 +33,7 @@ export const useLocationSuggestion = create<LocationSuggestionState>()(
     setSuggestions: (locations) => set({ suggestions: locations }),
   })
 );
+
+// useWeatherAction
+
+
