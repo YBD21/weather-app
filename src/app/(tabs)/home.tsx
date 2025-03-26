@@ -46,7 +46,8 @@ const Home = () => {
     },
   });
 
-  const { forecastMutation, locationMutation } = useWeatherAction();
+  const { forecastMutation, locationMutation, forecastByCoordinatesMutation } =
+    useWeatherAction();
 
   const handleSearch = useCallback(async (cityName: string) => {
     // Keyboard.dismiss();
@@ -90,7 +91,19 @@ const Home = () => {
       }
       const currentLocation = await Location.getCurrentPositionAsync({});
       setLocation(currentLocation);
-      console.log("Current location:", currentLocation);
+      // console.log("Current location:", currentLocation);
+      // console.log(
+      //   currentLocation.coords.latitude,
+      //   currentLocation.coords.longitude
+      // );
+
+      const forcastData = await forecastByCoordinatesMutation.mutateAsync({
+        lat: currentLocation.coords.latitude,
+        lon: currentLocation.coords.longitude,
+        days: 7,
+      });
+
+      setForecast(forcastData);
     } catch (error) {
       console.error("Error getting location:", error);
       Alert.alert("Error", "Failed to get location");
@@ -248,7 +261,15 @@ const Home = () => {
             >
               {forecast?.forecast?.forecastday?.map(
                 (
-                  item: { date: string; day: { avgtemp_c: number } },
+                  item: {
+                    date: string;
+                    day: {
+                      avgtemp_c: number;
+                      condition: {
+                        text: string;
+                      };
+                    };
+                  },
                   index: number
                 ) => (
                   <View
@@ -263,7 +284,15 @@ const Home = () => {
                       })}
                     </Text>
                     <View className="items-center">
-                      <Feather name="cloud" size={20} color="#4B5563" />
+                      <Image
+                        source={
+                          weatherImages[
+                            item.day.condition
+                              .text as keyof typeof weatherImages
+                          ] ?? weatherImages.other
+                        }
+                        className="!w-10 !h-10"
+                      />
                       <Text className="text-gray-600 mt-2">
                         {Math.round(item.day.avgtemp_c)}&#176;
                       </Text>

@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import { Location } from "../store/useStore";
+import { Location } from "../services/useStore";
 
 interface LocationSuggestionsProps {
   locations: Location[];
