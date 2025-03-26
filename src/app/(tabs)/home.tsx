@@ -80,13 +80,15 @@ const Home = () => {
   const handleSearch = useCallback(
     handleSubmit(async (data) => {
       if (!data.searchQuery || data.searchQuery?.length <= 2) {
+        console.log("Search query:", data.searchQuery);
         return setShowSearchBar(false);
       }
 
-      const respond = await locationMutation.mutateAsync({
-        cityName: data.searchQuery,
-      });
+      // const respond = await locationMutation.mutateAsync({
+      //   cityName: data.searchQuery,
+      // });
 
+      // console.log("Forecast response:", respond);
       // console.log("Search query:", data.searchQuery);
     }),
     []

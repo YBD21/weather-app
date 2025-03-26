@@ -1,15 +1,7 @@
-import {
-  View,
-  TextInput,
-  TouchableOpacity,
-  Platform,
-  Keyboard,
-} from "react-native";
+import { View, TextInput, TouchableOpacity } from "react-native";
 import { MaterialIcons, FontAwesome } from "@expo/vector-icons";
 import { Control, Controller } from "react-hook-form";
 import { SearchFormData } from "../schemas/searchSchema";
-import { useEffect } from "react";
-import { useSearchBarStore } from "../store/useStore";
 
 interface SearchBarProps {
   control: Control<SearchFormData>;
@@ -72,19 +64,17 @@ export const SearchBar = ({
   onLocationPress,
   hasLocation,
 }: SearchBarProps) => {
-  const { setShowSearchBar } = useSearchBarStore();
+  // useEffect(() => {
+  //   const keyboardDidHideListener = Keyboard.addListener(
+  //     Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide",
+  //     () => {
+  //       console.log("Keyboard is dismissed");
+  //       setShowSearchBar(false);
+  //     }
+  //   );
 
-  useEffect(() => {
-    const keyboardDidHideListener = Keyboard.addListener(
-      Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide",
-      () => {
-        // console.log("Keyboard is dismissed");
-        setShowSearchBar(false);
-      }
-    );
-
-    return () => keyboardDidHideListener.remove();
-  }, []);
+  //   return () => keyboardDidHideListener.remove();
+  // }, []);
 
   return (
     <View className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-200">
