@@ -143,7 +143,7 @@ const Home = () => {
         }}
       />
       <SafeAreaView className="flex-1 bg-blue-100 !overflow-auto">
-        <View className="px-4 py-5">
+        <View className="px-4 py-4">
           <TouchableWithoutFeedback onPress={handleOutsidePress}>
             <View>
               <View

@@ -24,7 +24,7 @@ export const WeeklyForecast = React.memo(
     }
 
     return (
-      <View className="w-full mt-6 bg-white rounded-3xl p-6 shadow-lg">
+      <View className="w-full mt-6 bg-white rounded-3xl px-6 py-2.5 shadow-lg">
         <View className="flex-row items-center mb-4">
           <Feather name="calendar" size={20} color="#1f2937" />
           <Text className="text-xl font-bold text-gray-800 ml-2">
@@ -56,7 +56,7 @@ interface DayForecastProps {
 
 const DayForecast = React.memo(({ item }: DayForecastProps) => (
   <View
-    className={`bg-blue-50 rounded-2xl px-2 py-3.5 mr-4 w-32 shadow-sm ${
+    className={`bg-blue-50 rounded-2xl px-2 py-3.5 mr-4 w-28 shadow-sm ${
       Platform.OS === "web" ? "my-2" : "my-1.5"
     }`}
   >
