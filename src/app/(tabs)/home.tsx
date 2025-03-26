@@ -22,7 +22,7 @@ import { useWeatherAction } from "@/src/hooks/useWeatherAction";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { searchSchema, SearchFormData } from "@/src/schemas/searchSchema";
-import { useSearchBarStore } from "@/src/store/useStore";
+import { useLocationSuggestion, useSearchBarStore } from "@/src/store/useStore";
 
 const Home = () => {
   const [location, setLocation] = useState<Location.LocationObject | null>(
@@ -31,14 +31,14 @@ const Home = () => {
 
   const { showSearchBar, setShowSearchBar } = useSearchBarStore();
 
+  const { suggestions, setSuggestions } = useLocationSuggestion();
+
   const { control, handleSubmit, setValue } = useForm<SearchFormData>({
     resolver: yupResolver(searchSchema),
     defaultValues: {
       searchQuery: "",
     },
   });
-
-  const dummyLocations = ["London, United Kingdom", "New York, USA"];
 
   const days = [
     "Sunday",
@@ -52,44 +52,32 @@ const Home = () => {
 
   const { forecastMutation, locationMutation } = useWeatherAction();
 
-  // const dhandleSearch = useCallback(
-  //   handleSubmit(async (data) => {
-  //     Keyboard.dismiss();
-  //     if (!data.searchQuery || data.searchQuery?.length <= 2) {
-  //       return setShowSearchBar(false);
-  //     }
+  const handleSearch = useCallback(async (cityName: string) => {
+    // Keyboard.dismiss();
 
-  //     // const respond = await forecastMutation.mutateAsync({
-  //     //   cityName: data.searchQuery,
-  //     //   days: 7,
-  //     // });
+    const respond = await forecastMutation.mutateAsync({
+      cityName,
+      days: 7,
+    });
 
-  //     const respond = await locationMutation.mutateAsync({
-  //       cityName: data.searchQuery,
-  //     });
+    console.log("Forecast response:", respond);
 
-  //     console.log("Forecast response:", respond);
+    setShowSearchBar(false);
+  }, []);
 
-  //     // console.log("Search query:", data.searchQuery);
-  //     // console.log("Search count:", data.searchQuery.length);
-  //     setShowSearchBar(false);
-  //   }),
-  //   []
-  // );
-
-  const handleSearch = useCallback(
+  const handleSearchSuggestion = useCallback(
     handleSubmit(async (data) => {
       if (!data.searchQuery || data.searchQuery?.length <= 2) {
-        console.log("Search query:", data.searchQuery);
         return setShowSearchBar(false);
       }
 
-      // const respond = await locationMutation.mutateAsync({
-      //   cityName: data.searchQuery,
-      // });
+      const suggestionsList = await locationMutation.mutateAsync({
+        cityName: data.searchQuery,
+      });
 
-      // console.log("Forecast response:", respond);
-      // console.log("Search query:", data.searchQuery);
+      setSuggestions(suggestionsList);
+
+      // console.log("suggestionsList:", suggestionsList);
     }),
     []
   );
@@ -114,10 +102,9 @@ const Home = () => {
   };
 
   const handleLocationSelect = useCallback(
-    (selectedLocation: string) => {
-      setValue("searchQuery", selectedLocation);
-      handleSearch();
-      setShowSearchBar(false);
+    (selectedCityName: string) => {
+      console.log("Selected location:", selectedCityName);
+      handleSearch(selectedCityName);
     },
     [handleSearch, setValue]
   );
@@ -156,14 +143,16 @@ const Home = () => {
                   <View className="relative w-full flex -mt-2">
                     <SearchBar
                       control={control}
-                      onSearch={handleSearch}
+                      onSearch={handleSearchSuggestion}
                       onLocationPress={getLocation}
                       hasLocation={!!location}
                     />
-                    <LocationSuggestions
-                      locations={dummyLocations}
-                      onSelectLocation={handleLocationSelect}
-                    />
+                    {suggestions.length !== 0 && (
+                      <LocationSuggestions
+                        locations={suggestions}
+                        onSelectLocation={handleLocationSelect}
+                      />
+                    )}
                   </View>
                 ) : (
                   <View className="flex-row justify-end items-center">
