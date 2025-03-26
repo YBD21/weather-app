@@ -91,6 +91,15 @@ pnpm run android
 - Recent searches
 - Favorite locations
 
+### Not Found Screen
+
+<img src="./assets/screenshot/page-not-found.jpg" width="300" alt="404 Screen"/>
+
+- Custom 404 error page
+- Friendly error message
+- Quick navigation back to home
+- Animated weather effects
+
 ## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
