@@ -193,20 +193,20 @@ const Home = () => {
                 </View>
 
                 {/* Weather Stats */}
-                <View className="flex-row justify-between px-6 py-4 bg-blue-50 rounded-2xl">
-                  <View className="items-center">
+                <View className="flex-row justify-between px-6 py-4 bg-blue-50 rounded-2xl mx-2.5">
+                  <View className="items-center py-1">
                     <Feather name="wind" size={24} color="#4B5563" />
                     <Text className="text-sm text-gray-600 mt-2">60 km/h</Text>
                     <Text className="text-xs text-gray-500">Wind</Text>
                   </View>
 
-                  <View className="items-center">
+                  <View className="items-center py-1">
                     <SimpleLineIcons name="drop" size={24} color="#4B5563" />
                     <Text className="text-sm text-gray-600 mt-2">23%</Text>
                     <Text className="text-xs text-gray-500">Humidity</Text>
                   </View>
 
-                  <View className="items-center">
+                  <View className="items-center py-1">
                     <Feather name="sunrise" size={24} color="#4B5563" />
                     <Text className="text-sm text-gray-600 mt-2">3:45 PM</Text>
                     <Text className="text-xs text-gray-500">Sunrise</Text>
