@@ -2,7 +2,7 @@
 
 A modern React Native weather application that provides real-time weather information and forecasts with a beautiful, intuitive interface.
 
-![Weather App Preview](./assets/preview.png)
+<!-- ![Weather App Preview](./assets/preview.png) -->
 
 ## ✨ Key Features
 
@@ -68,9 +68,16 @@ pnpm run android
 
 ## 📱 App Preview
 
+### Landing Screen
+
+<img src="./assets/screenshot/landing.jpg" width="300" alt="Landing Screen"/>
+
+- Welcome animation with dynamic weather background
+- Onboarding tour for first-time users
+
 ### Home Screen
 
-![Home Screen](./assets/home-screen.png)
+<img src="./assets/screenshot/home.jpg" width="300" alt="Home Screen"/>
 
 - Current weather conditions
 - Hourly forecast
@@ -78,7 +85,7 @@ pnpm run android
 
 ### Search Screen
 
-![Search Screen](./assets/search-screen.png)
+<img src="./assets/screenshot/searching.jpg" width="300" alt="Search Screen"/>
 
 - Search any location
 - Recent searches
